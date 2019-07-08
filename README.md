@@ -1,1 +1,1 @@
-This repository is a github page, used for hosting images for my projects.
+This repository is a GitHub page, currently unused.
