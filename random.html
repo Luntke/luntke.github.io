@@ -288,6 +288,18 @@ let statistics = {
 
 //  Functions  //
 
+//This should be around 52 bits of entropy due to floating point precision.
+//32 bit would work as well in this use case, but whatever.
+let get_random_number = function(){
+	let array = new Uint32Array(2);
+	crypto.getRandomValues(array);
+	
+	let large_number = (array[0] * (2 ** 32) + array[1]);
+	let small_number = (large_number / (2 ** 64));
+	
+	return small_number;
+};
+
 let get_rounded_hours = function(seconds){
 	return (Math.round(seconds / 3600) + " hours");
 };
@@ -338,7 +350,7 @@ let remove_overflowing_past_videos = function(){
 
 let get_random_video = function(){
 	let video_id = "0bOsA93yYFk";
-	let original_steps = (Math.random() * past_videos_total_duration);
+	let original_steps = (get_random_number() * past_videos_total_duration);
 	let steps = original_steps;
     let last_index = 0;
     
@@ -358,8 +370,8 @@ let get_random_video = function(){
 	
 	
 	if(settings.bad_random_algorithm === true){
-		let video_index = Math.floor(Math.random() * past_videos_allowed.length);
-		let random_time = Math.floor(Math.random() * past_videos_allowed_durations[video_index]);
+		let video_index = Math.floor(get_random_number() * past_videos_allowed.length);
+		let random_time = Math.floor(get_random_number() * past_videos_allowed_durations[video_index]);
 		
 		let video_id = past_videos_allowed[video_index];
         add_past_video(video_index);
