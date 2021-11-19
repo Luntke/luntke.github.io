@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Random Jerma Moments - jerma.org</title>
+	
+	<meta name="referrer" content="origin">
+	<meta name="author" content="Merlin Luntke, Twitch Lazy_Luc"/>
+	
+	<link rel="shortcut icon" sizes="16x16" href="./images/favicon_16.png"/>
+	<link rel="shortcut icon" sizes="32x32" href="./images/favicon_32.png"/>
+	<link rel="shortcut icon" sizes="48x48" href="./images/favicon_48.png"/>
+	<link rel="shortcut icon" sizes="64x64" href="./images/favicon_64.png"/>
+	<link rel="shortcut iconn" sizes="96x96" href="./images/favicon_96.png"/>
+	<link rel="shortcut icon apple-touch-icon" sizes="144x144" href="./images/favicon_144.png"/>
+	<link rel="shortcut icon apple-touch-icon" sizes="192x192" href="./images/favicon_192.png"/>
+
+
+<style>
+
+/*  General  */
+
+:root {
+	--primary-background-color: rgb(15, 53, 76);
+	--secondary-background-color: rgb(26, 209, 181);
+}
+
+body {
+	margin: 0px;
+	padding: 0px;
+	min-width: 600px;
+	min-height: 600px;
+	background-color: var(--primary-background-color);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+}
+
+#navigation_bar {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+
+/*  Navigationbar  */
+
+#navigation_bar {
+	position: absolute;
+	z-index: 100;
+	width: 100vw;
+	min-width: 600px;
+	height: 41px;
+	line-height: 41px;
+	border-bottom: 1px solid #1ad1b5ad;
+    border-bottom: 1px solid #000000;
+	background-color: var(--primary-background-color);
+	text-decoration: none;
+}
+
+#navigation_bar a {
+	text-decoration: none;
+}
+
+.navigation_icon {
+	width: 48px;
+	height: 48px;
+	position: relative;
+	margin: 5px 7px 0px 1px;
+}
+
+.navigation_container {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.navigation_item {
+	display: inline-block;
+	position: relative;
+	color: #ffffff;
+	padding: 0px 10px;
+	font-size: 18px;
+	cursor: default;
+	vertical-align: top;
+}
+
+a.navigation_item:hover {
+	background-color: #a3374e;
+	color: #ffffff;
+}
+a.navigation_item:active {
+	background-color: #c8394d;
+	color: #ffffff;
+}
+
+a.navigation_item_location,
+a.navigation_item_location:hover,
+a.navigation_item_location:active {
+	background-color: #a3374e!important;
+}
+
+.control_panel_button {
+	position: absolute;
+	vertical-align: top;
+	right: 13px;
+	background-color: #399ee2;
+	color: #ffffff;
+	border-radius: 4px;
+	line-height: 19px;
+	padding: 2px 6px;
+	font-size: 0.9em;
+	top: 9px;
+	font-family: sans-serif;
+	cursor: pointer;
+}
+a.control_panel_button:hover {
+	background-color: #55ade8;
+}
+a.control_panel_button:active {
+	background-color: #55ade8;
+}
+
+.random_button {
+	width: 100vw;
+    min-width: 600px;
+    height: 41px;
+    line-height: 41px;
+    margin-top: -1px;
+    position: absolute;
+    display: inline-block;
+    z-index: 0;
+    text-align: center;
+}
+
+.random_button > a {
+	display: inline-block;
+	background-color: #399ee2;
+	color: #ffffff;
+	border-radius: 4px;
+	line-height: 19px;
+	padding: 2px 6px;
+	font-size: 1.0em;
+	font-family: sans-serif;
+	cursor: pointer;
+}
+.random_button > a:hover {
+	background-color: #55ade8;
+}
+.random_button > a:active {
+	background-color: #55ade8;
+}
+
+
+/*  Content  */
+
+#content_container {
+	position: absolute;
+	top: 42px;
+	left: 0px;
+	width: 100%;
+	height: calc(100vh - 42px);
+	overflow-x: hidden;
+	overflow-y: hidden;
+	perspective: 1px;
+	perspective-origin: 50% 0%;
+	text-align: center;
+}
+
+.background_gradient {
+	width: 100%;
+	height: calc(100vh - 42px);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background: linear-gradient(180deg, var(--secondary-background-color) 0%, var(--primary-background-color) 100%);
+    background: linear-gradient(180deg, var(--secondary-background-color) -48%, var(--primary-background-color) 100%);
+	transform: translateZ(-2px) scale(4, 3);
+	transform-origin: 50% 0px;
+}
+
+#data_container > div {
+	display: none;
+	align-items: center;
+	justify-content: center;
+	color: #ffffff;
+    height: calc(100vh - 42px);
+}
+#data_container > div.loading_text {
+	display: flex;
+}
+iframe {
+	width: 100%;
+	height: calc(100vh - 42px);
+}
+
+.loading_text {
+	font-size: 1.3rem;
+}
+.instruction_text {
+	width: 500px;
+	padding: 0px 50px;
+	margin: 0px auto;
+	font-size: 1.3rem;
+}
+
+
+.about > span {
+	max-width: 600px;
+	display: inline-block;
+    margin-bottom: 20px;
+}
+
+.about > table {
+	margin: 0px auto;
+}
+
+.about > table td:nth-Child(1) {
+	text-align: left;
+}
+.about > table td:nth-Child(2) {
+	text-align: right;
+}
+
+
+
+
+
+.control_panel_open #navigation_bar {
+	display: none;
+}
+
+.control_panel_open #content_container {
+	top: 0px;
+}
+
+.control_panel_open #content_container,
+.control_panel_open .background_gradient,
+.control_panel_open #data_container > div,
+.control_panel_open iframe {
+	height: 100vh;
+}
+
+</style>
+</head>
+<body>
+
+<div id="navigation_bar"
+	><div class="random_button"><a id="random_button"><span style="text-decoration: underline;text-decoration-color: #ffffffa1;">R</span>andom Jerma Moment</a></div
+	><img src="./images/jerma_logo_48x48.png" alt="" class="navigation_icon"
+	/><a class="control_panel_button" href="#">Control Panel</a
+	
+	><div class="navigation_container"
+		><a class="navigation_item navigation_item_location" id="video_button">Video</a
+		><a class="navigation_item" id="about_button">About</a
+	></div
+></div>
+
+
+<div id="content_container"
+	><div class="background_gradient"></div
+	
+	><div id="data_container" style="position: relative;">
+		<div class="loading_text">
+			...Loading
+		</div>
+		<div class="instruction_text"></div>
+		<div class="youtube_play_area">
+			<div id="youtube_player"></div>
+		</div>
+		<div class="about_text"></div>
+	</div
+></div>
+
+
+<script>
+
+let days_since_update = Math.floor(((Date.now() / 1000) - 1637262000) / 86400);
+
+let video_ids = ["v90iteCTET8","LcthaNjsoJs","L7UqpMbOuvc","0tNzKdQ5MZc","69j32dGwtvE","EDbRErrRxWw","7uCjJKqOxcw","K4Fyd95C8X4","t9OC2ToZIQ0","JqvOeZa4uvI","0bOsA93yYFk","LsiohoTagek","EH7lMMTJ1Wo","Omx-JJyadTg","yQIAOcBRVAk","8_xW-SqyJAU","yqE5PQf5mmg","tGBt3ym_oF8","DJm276wNNC4","u3JlXhXXA-Q","eZIzAFzxNyQ","O3on8nSSLn0","U0WHed6n_Zc","OXxP77rUx4U","vAgin9V80sQ","kpNnu08G5VE","tl4Alxywcy0","v0X-rT3eyuc","yU6WC4dpaHM","I2S01qhyf30","c7alPXhmmPo","YXses0_z8dE","4iLIfCzToFY","w5DCH0AmV8E","OKy8iYt9fKc","fa7TcdabUiE","ydo2GNXEh2E","tNfD4BojMbM","LcGg51qtEFY","VsU_b8dvkRs","qsv-VIgDzns","St2PMVW_W7Y","L8K_1nMaoOU","LDSnTvBVL2k","jv-s_5EztgI","0uKgUSRdrHM","lLNXXCh1H-Q","DDwhtPHJXZE","zSp6rA74fmY","nIduFHfTZJQ","SKG3Rqa31Uo","mNy9HIo3shs","6XC4Ud4pmD0","CTa37yuuCh0","M3SmJ7W9nBk","sVkUrGAcl-k","__5N-qoIpPg","uISAks48kfI","hQH91UfkxsI","67y2tcWha2A","MzbGBQWjjdk","lofR-R_rFJ0","MQ7yL4UexwY","MV_8FhutGrI","KBh2c34tprY","F4wzEdZX8_E","n1_S92GLdnY","pIrMOpb98dQ","cDlD-Qkt92I","bz7XOtelpG0","HLzYHiYauoc","FLCgan74odo","JIllm6V7tQM","qPU21d5bqX4","9ccB8zmEeas","0yF9X8B57-4","cZk40mKbqO4","dLF_ruGGOnU","k9nrgpoVXNQ","jAXioRNYy4s","1OUKIRixgUg","G2_8Skp0A1s","6hpzzGzowC4","Bm15fBIyOZc","xP6-Vb3LNXA","zxLa2vfhjm4","lS-CQjto4xI","q9TEqFfk6UM","oTZAmC6xNC8","kkcH2YxhRVw","GtHhpZOlY1c","Bum9BLd8P9E","_TkPGoHMfKw","J29ppL3yAng","GeYoFRXuj4M","v3wSQnGavKs","Hjcq3ZlzyoQ","xpWEmycyY20","0qFpEEyRlZw","tFwLwEcSTwc","FRS2Y9Io48M","rgkHU_rza7k","GZhaXXXxdDA","KTIeHrlD2dM","lhYcYdvZ3IE","m4-ihxoO8ag","JUmHiYBt8i8","BGLbqr9qP2Q","MwNPH-ULKKM","0h291W4oeoQ","q8hNiRZkvnY","9SHOp5D3-Nw","MxD4trTTCtE","izblRmLXNxk","JQhComn-xHA","fAQbb7aHYvE","txg8IJhGEA8","hkR4OATPNus","p5HSepKMcbQ","Mwj24EGVQK4","CVhKYfZm8qI","coig0o1oTxw","B2vAUzZt2Cs","rO3zFtAFZ-c","gRCcpKcwyYo","Se99Ff_nos4","44vV760TSj0","AUxLrKO7_AI","2t5zJO21beg","AZVGWKpaY4g","GoYjfrN2Dk4","L9NSTdU2zuo","TxyuQbB3Ryg","169ZDMDLKEY","qLemtB_CUTQ","uWo4H0MY8jU","CvT69RUf9Go","8BhstcmYM58","Bk58-KUarow","j-9yK8xmaTE","a7LMSOCHySE","4Au_z7BfCOw","VajgRJR5ImI","KGSFvF2r2gM","lrq_ne4N3JQ","mbyPRW6ViHs","xRxsXgwEzQY","6Pz-Sxuhv8I","bs2c94cHcdI","SdVQq5imwqs","F2tAl0TO-p0","e79nu2LzUqs","ReOHZ7CyJkI","x2-8mhdDHdg","FrkxddKF3x0","qEXhay52ORw","L6ZWEz4jwVQ","BJ4-2pGK6nc","zf8Eg7FPs90","_icyI1m_Xes","VQ4B5d_upTE","N9sP8KY-87k","nPHWrI3FbCM","LbvC15nf2Xs","0kR5h1ZK3Rk","4YjvoL6GMeg","f7cyaC8Q1f8","CIAFBPBlOTs","vfpDYcdvPf8","dwbRFryGrPc","kn-BTlCfYWE","fYtRil5Hwyg","RWMvr4DFLYs","lb9-9CZrBSg","9BA1fy4DLOc","lRryTSzHV7k","4PEPVEQckfM","QB9jQob7yxM","LOe3KQAcVaY","VUgFglO5hCg","GpVSX_avnnk","BTwZVk91ReE","NXhFcL8xqPk","bHN7KcKs4s4","AkS8xaAryCs","RdND-vjAPc0","ta84s-0IcHY","1KbmTIAKX24","1EYzNJUNkU4","OUs6PBSE8us","8BqEyYVvtiw","Vb4o-7rXdOk","lury8NeOoRI","1f9EpxPLlR0","FtNgtfITtwU","0O-rcxweZXo","NgGOLvbknow","j007O7YjvEc","E9NpBhLaCA4","AO8ugDiqcO8","lPq66MGFxQw","p-xwX_R2Crw","VBLuzUrlgMs","dj69RhY13ac","KrjgP24Ym6k","bshGpL05zqo","559B0Q38dUg","rlH5PFPB-Sw","cHsNwig3RQU","Ax15VZDa4zs","uC-s_UNX8y0","CrlE-ZhL9y8","KHiK8gWULj0","kH4AkrC8V4o","x8_4xa9JNu4","qb7TFXfzpqQ","40tttR5NNEg","vCOejaiLQm8","JLYpsrJuU1g","HAHs92trNa8","tyIRC7iIKvo","ngceM3NdHY4","yQouk2tEG5E","BdWWMbFFgb8","SQZQugFiTO8","nC2Wn1Tungk","vZrhN-u4zTc","gSVO1FYITW4","FnFmaSycWUg","-e4kUmcj6PA","ah-Q7uNt8Bo","uN74rMFMugQ","bt09g9yvhf0","eBy_d1heIRw","81geOfL8Fu0","9_wRzDnScAA","v2bqOhYglyk","wTWa3Em1xbY","Zuyp_BRPaOk","pPveHMNwlZo","mCB0-cjUSgo","toDMu_QzPJI","0mTAT5x3EEw","j1OorMU5pTQ","TXQAk9Ny5qc","dMsDrQTKPjc","JVvEHcrMNk8","sMIucBHEdtE","BSyVquk8KZs","i0r3Ud4LUaw","QJm2OeKCcTQ","7zn_szR5-lA","wtwn99xI5qs","ooW8Bbla_hU","LJH22NhcBFQ","10qGQoBBo6A","KuWjLbr7uhA","wFMlkW9Gmok","p2SxrGV1JX4","RzYBvLNyO4M","jpoNf-X56KE","wbnhFiOeimc","iYqenuOpN_U","5rjeakhaP_M","7czs0xY2sVQ","qSfmh8FIajI","U4DXrERN0KY","RqbRo1o3EmA","-eqQA--K-5Q","dOhQJbs1Pcc","zhEWkBaHi_I","nCP_DH84VMg","FuYqcVmmBNg","-uhGUXkCTI4","1vAOp_hSOv8","0Wstli4IRdo","uYFsWJcNQgw","SURf7oJUMq0","e-TGMz8F7mY","A6uVn8_Ll4E","KUMGXlnSh3A","m5UBxRcLbqY","i8nDJCje4Ps","NX2y4ZZhgsk","EGuOwrT7ZuY","NCC92PmbrXg","7O-bD6eOvFs","YpD2xFXaD1o","5WqgNe2BpkU","W6tDk_Rby9I","pDHyR7LwrFI","bsCrHg0qJUQ","IZOLDssehZ8","v9rOHZnMff8","HiaqAQatPow","1TrtRD0_CtA","vUme8v1OzWA","tzAcT_jDpvo","Fjfw41r7tNE","3w40vYBXiSY","nd4LFI-Tu4A","TDVneHb7G2c","bhz2IND8Lsk","aNHeNYuOlss","uVTidQn8BuA","9KIHhL15cUw","B0wdoHvDp-U","XhZIqp1qCao","91p-ISjIuSA","XoVOmvx4UN4","4fBuIA8htGQ","5_xkW4xFAQs","Gw7ZNwe5Fnc","dKpMg7N0eWE","72KfpijZhCw","ZtiTLzG8Htw","pVyAwfmWqmo","MQJbh-SUm9k","Jrr1my3U0Qk","8MBIIo7Fzwg","_DsGrb-tJI0","ZY8cBRSPY6o","TZ675MeJrAY","k-AXm4xHyqA","ep2CtJTQ0i0","X4KHN-KEdZs","KogoPpKhupg","Tiq-peuY3aM","DCifY8RPltE","cK8p5BdkBOA","D813H2gMS6A","qIEdOiqluUE","tEaXsYKnUI4","Qj8cBAIBNTA","KH0IufJbIhA","IeAbsvyJZ50","NMi8S85zLjs","BcrwDnkk0_g","KMrOQmIrfkw","-GiF909MuHA","ec8QKQx6f7Y","O_r__TrcL_o","0a7eW6fwxZ8","WgMSHLCw1Zk","aXKY17RfSWI","Cm_lnZbODCQ","kS0ljKclDh0","8nsablKJEvs","c2cpZX11BV8","7fma9ldb7u8","zzDiBOT3QzU","xYDEo6N3HmI","ZySC4BFbrWk","sSMuX4LgYCE","-aTS47gKtkY","N4PLi-n9FBY","cCZwr1ypWkI","0PG0KWPJLOE","dMi5aVOLFeA","Iv_HtvNJIEg","W28jBNhEtuY","-kxIbsqtjQk","q0a9b7yrwIg","WJfgSwaa8vI","M251Cl1xK3o","UmhykzUO5QA","CLOBfX4W6fU","FSJws63wxAs","jUpeudjsDqo","1qoH0UDWBNs","Bzp3V_4HfNg","RwQLRSsF9Nc","Q8UXfoZHoTk","ZFNHTklm6Uk","8LDap-PUbMM","nuQjIOZkR_8","x5dY51uJxdg","1TIOve-FJ7o","vzhuCer4OZk","8uhhkwk9-hY","zTfBdgjINS0","FeIv13A38OA","3x57581RtkY","v0WsS35qnXU","xPxI7kccM-I","8yE-KuH6pZk","72Iv_Qrm4pw","gv9c38fEukk","kR7xWQTqSdc","peGgnti98i4","ZXTtLA1khFM","KQDn2iYHvWo","IkZlJ5pVLbU","9I7JfpAARUw","oOaTAcmkyuY","Nbs_917z0GM","WGc3aPEAWD4","e9I0FTYPgOc","aXSdCYQOuW0","uGC-BW-6x7k","uZUueuGa5cw","lkvyzyHn_Rk","OSxunFwmL2o","Qd37r2IEYiw","oGaUXnfvv_A","KjPYnrAgKIo","6B2I0wRh7Hc","-8hlEvaxsHI","LutCilauApU","Coer_CqJ9QM","2AfWGTWRjqs","8Pge6txxGSE","4ngWo5MlU14","82dAXIn1Pvo","gk-AM7vYVgo","pbe5J29hSmk","3NSCsOaslZg","9Hv3itIvba4","02sTLi0AwSY","mFXRihFiDM0","MlCql7L0ucU","sOwSLszgx4s","EZRtgiQ_EKI","NCANdVHYoCU","-dxBsR5PZbw","MKMiWzNit7o","0hdT3CfgZVE","RiJ8jTgea4U","xCBWm7UEPZE","DfWIcSGqUiA","aJsGyHu1Fsg","Yl0rctl3eQo","Qv1BynSD4yE","JaaoDZMRAMU","gRJfrKHTH0o","5bGC76O-i2E","Q8fV7OrY488","XCvwPCPy3Xw","n6dbufeP9Pk","MtM_lcntc5s","GJnq-CeG1q8","rHPYst9eu7Q","phtSFa_-u60","T3uog2zsHMw","17eza_Egvqs","364zALYpNcE","MBzL26byyjo","X4GIONgC9zY","YWiwHvmMFlY","0cL4awewi6M","_ddJgK5-f-0","QIqsnlQj4Mc","zeE44bLrEYo","hs7UPC7wtGM","0kJV5M3s8Ic","wM1izrNBsMA","L3hxXQpfo1w","QDWBRGpSWSY","0EIvGfmGnBY","lKZ_NMEgDyA","inGGP9kDGzI","PqfTWH1mR_8","mMV06xKoAvs","gLGT2cHfrKE","LbcZlaj1IHI","EkT3OT8BGFA","MraHO5Ybxh0","-hs-7gt9XB4","xt3tQqVj3Is","mMBVckuwTAA","-KyWJf2HYUg","GDpEuxh--WU","miu4_FJu8xg","d2GPQBqzzQQ","GHdLlR0b4xQ","A-OGEHv91YI","mEzC8FVL1cw","YJFHbtfFUPw","1cBVh76XKbM","4bUAd_D6QO8","tMcypGwwts0","-d8HRbbHVQI","nFeOjw7kBqk","9EJOBkT-218","7G5G62MxRis","FDbx9GV8stg","eE5eMTtKNis","lmTaXZ2ztCY","SWc6lz4TXKw","JcEWUNNITGE","73ba4dT0-bU","Cqp21fCaAA4","X7pvQlZvC3A","u9mtAPjZc3g","68Os9xwmKZE","c5pTiU6KHMw","0z5HQ0AMY1s","UDWu2TF1gZA","OORB_fp1Kzo","A6TJFTrx5Rc","CUKMpx5a6Jo","73mPKsPxRNs","qsrNzwcM2OE","T5UafO2j4FI","LHaxNFXcjVc","IpwA9pEg78o","6VW19ArDKXU","tpBUlyebF8k","kRQteSgrB4o","cPxbW9Rmk9Q","zKEl3ebSIl8","pAN5qv-Y3Ls","vnJOEIQAuRk","iRdeV-aQVog","uAepkkLsCVs","WvNTlAaANww","F4wKzc9iTI0","i_Y11iMJw_A","hKIe0fcSU-k","ncMiv6b-tBk","P6B_SeS2hEM","Eq7wgFcPTic","E46M0fPrYZ0","IjWXVtUbqEU","gk2gESmJY18","VVpb9lgBOgk","4WSs5tjGELI","YOQid1hHhH8","-bk7nXS4xSM","nZFBctefK8c","pcRqekdj1TQ","lsGVy2eLOyo","5T0YDMVwqJc","_NOG_PtN0X4","KHJT6T79y6k","EBTgK-TMkbs","ZWgqJLPT4pA","gfhHpye8OuU","2Jzox_9XmYc","mtAtnLCn-A4","fk7vhl5sbzw","Gbrgq0qee2M","PQhInWc9O_s","ZK_fuA2XV9M","QQ8ghBValq8","rf6O3xiUOac","5xLI-fiwO6A","HwF1kIC2444","jljBTAh5Ino","fM2iJNfgWE0","LBGOiLSmESE","Qp3rbeUvChI","FA73U6Dk0kc","m5IPVgQYmHI","2SPFF1Evz6k","X28NV1WvvaU","KEawil6jyR8","4O45Z3gT9Y8","KIUFUxNE_bM","Xz2txTbLJ1M","3LROszYk_Og","5jHpK1NvyP8","Plnw85tm3LU","NtTiukJkXmw","Ri9mgG-IfOo","fW5FojJpgEY","Rmcie2bfbL4","QK5411OAE4Q","Ut0RV9VZXGg","PfFq9anY32s","htUDG4re1u4","Q-IpRohg4uw","01VeE94FCQk","wUf2zB0YQd0","Cr4gbi4mVO4","hJug66-VRiw","k_AezIN--HI","YntFbf35Y-o","mnkd0TMCic0","FWeJZHFcc5A","VdGUQo2YuhY","bRye5LnQniM","hI6n-BaGrgA","vE5iNo8t_Pg","6MzVJaO6J-I","nJ0bkgl82Yc","WO854GIFy80","n_0Bz_FDZ9w","YrsPWm52Q9Q","3qWKO3LVCxc","RK70bNRvNbI","aZ73KuyaWgE","haVMNf62FiA","zlVG1S_YOUg","v9W6gcWLKv0","DaxUDzfxTyk","9HQe_-qU_r0","DIXxw7Ysbr4","TnAqVV5J-MQ","eJhuIx_xmRk","ky5OLsoQCps","tnr99lpixP8","xPlZaTMmYdI","7Ow1tTJsUb8","17ymCQTSlPk","NF6-jsXcjV4","WOPewcgzXvc","S9p6bQlWMYg","ZgRD60lQ3EI","-vnn1v9KLsI","q0K4cFWR-cA","eKEJmg9aCYg","qSHDfd2r4cc","b-qJ9C2RuoI","jh5SCZhedR8","GsQ4TaFtR5U","_uZ1rbhES7g","B-PWDhgB1KY","s7FVPIfM8ZE","wGU9yymTy3w","I3X7yg6qi2k","qodn1uXLJzs","4PYavsEl3Rs","RMBxfAKuebw","KI_VH1RAJQM","c5_UUwJ_De0","HGlPBdb7IYg","qxPJXs2zEMo","DVk6uJAvnd4","bcZk1-kbJ6c","ukDuPLeMyQk","A_vGxFMdkCI","pRuP-GSb6P4","u7jn0xCCkd0","lu3ydK-Utfk","NGxC91ioiWM","igTWUlScBzA","-2TKhGM8194","qfsdPo2kDIc","_SdGsXdStZ4","B0fk5MUa1VM","OpVzFXdf6UM","3UxOyH_LzfY","Shs7_9BMjIQ","eXAMpZ5xLSw","9S08Jn2IEmE","oszTzxsIbCA","1Jlv9R9hCjA","FP0x4A0-wxQ","M0juBQzYO2U","7jrhmBXUEZs","BOYKF1TzhEE","V_4c_2yIHcM","BkfW1cpGGqs","n3WUO0ZWMvw","zKmYVB62d5k","l3n7EjtL3_g","M9W3LueLUaA","ZJkMR0HfLNs","h4cKOi-81Kg","wXXxzk2BBXk","V9BenBewvIc","BfszLIvOtFM","_ti9xIAAvSg","DI6fPudi5CY","jd5aCXxxwp4","oH3emXQ0mrg","mSGZgZZkF9s","5kEnYmE9Sic","FQ3dIAImLlw","mRW5V-_scdU","ko5gjwr3twA","POwJYKcOTVk","fEMbBJa9VCo","JGIhFQZuoBw","TTXW_iWajwE","Nbja3prxo74","R9it9Evya9I","O-DGyjAYPtE","5fKj99AJ_zU","ZBodnsBeurc","7bERCtOpZqc","VG3a0Xt7zk4","QZqT0mIeGvo","_FYiXVv2Co0","_GkGVOIk9XI","zNOdjfvNTaA","NzO36fuPLwU","wtlFwqx0-CI","zA8Qs4C9XCM","YSg34QBeNa8","HueMHGP8a6s","-RrAdzHJJAQ","s8Lp58Qc-rU","9MOhaeF2jOU","rUOXNzobI_c","_EhPapqA1fI","s07HmnYN1Fk","q0YTxTAZRvU","zXgCQmJPSUc","efM4TmF8aII","sh_oS6jWihc","4ciaSMg6Vt8","n2BW9Iir9fw","fJTdh09PWOk","_qBcVrwWvVI","XkQwyS_zEK8","aQRDnLw30Q4","eKvjuWIM75A","E0BWthc_aT4","7JjMz4aJDn4","iKzgcFVxTvg","kP5siMyyK0o","fDSOSZjv3O4","9p_zhv16_Xw","sGJNheqj8X8","3UZvDG70bqo","0TStvBbG--M","mN4eYlIfoxo","4NTuflw3nrM","Qx00g1KlRjU","txdPUbWYfJM","MEVeOj4UE5s","PQ6l5XPuqgw","AzxpdVHOLQU","NX8LDdFDmaw","Mv_k5laRhdA","y5l53UkWzIQ","V7tXKQxXs-s","hiGYLgAHFNU","el6wYB2DtsU","FIkD9a_5EAA","azyO7oQLnG8","HG2DnxItNWc","BRk_dKofExE","Qba-D6Dqro0","VkmFx31Zens","lciV1pLofsw","cBNdOWJzwn8","2gPU3kQlGQM","EXqKq2x29Jg","Gfhtoo_Hb6w","rEqg5z_Rtzc","DAUw6rkSm4s","BxJp4vnB1iI","8w_ZKSkfOtM","WRtw_JmO9qw","UmQp502LqoM","t5kiCcW_i3s","VxSMdjtNs-k","2dSi9dfs9EA","eWdo046dzEc","Z2AS60zIn5M","KMT8qTvtfpU","tSSlRzRBYdM","v3nTkNzWqMA","RCAqqaXUd60","-ayiWwh0MTg","-OSK37ELtFM","Akb_1v65rC0","H35x4R_BKoY","tRonGFX8KWk","h2uEHSuh554","9PFObaiunS0","q8siqMBSZB0","-Gz1tAlH3k0","_mcBTv9xWzk","HHbbRWO7rM0","LW0xpoiTrzw","QF8hGY6AzVQ","UVLf9mEN5jI","h2U3Hvgw79w","cKi4UxkJ9KQ","JcWfPV03Cqk","qEDWoT5YWcs","9rRDyRmTDGw","el67VCSXRcY","_qrLxCVDjnk","ST79sIL0sdw","ARQfVYbFOzc","6xSi9-EKlzE","VqQOYofRCWs","B0Z2nhtiPKw","3PjpTgl9CDY","5Uv8u2T7ikQ","knQsa6MamH4","H6c1so-DowE","pAVLlaxwI1E","gEdjzKOeLao","SeATvgPAwv0","WFn8oGzLcog","C4KGGUX6bVk","X5zOQL1eDAw","06-cIj7tMoA","Z6U4szlk5H0","sHR4FpDZeCQ","saGyh2NXAPA","tItDuIFa1TU","AWUfaHJELHE","vwpWZtow7co","r-C3-8vgayM","MRl1F9pjDpg","pIcRgpzx0Vs","NtHpEQdRISc","D3bGl5297m4","QIWNf-TsvYs","_ROjnHcUht4","it9qmuug53E","VD55j6fT42M","MDJE9XXz6Rc","1elNFWsKfwY","AwlU28h7VWQ","6iJoNMTPAvk","B2f0b8prL5U","1Szq4l9frgY","wIT-Se7lvu8","RVCNWl2JP_k","W0tfrGlQkoY","5Rz9NJLcAzQ","Iz2Cyj0qe5Q","jMQ9uNYRkdo","wj8uGQRIxRE","nkVDHVxD48g","mGWIAAQ3KS8","a8k3I8AKhDA","FM6uHetKE8s","MSk4rvrHJJQ","5Gl5VBfrHi0","URBPG-qDKog","du-YEvtd9gs","y_BlxqbOYrY","-H8aZRr_D5k","FoCjLPrPStQ","wEGKulEKyGU","ZB0DYXaJExU","sfO-3crT6n4","bGN5_Wh8WKI","pPO9wT1vI0A","zZlxE9rrb9w","6Z7HuNBrq30","9TPzqeR14uE","PQ0ghRQZ4UQ","ny1Xr2DXYJc","a4gbuytnbrg","nzypWH4jD0g","Gy0FfEC3U_w","DOJACKEXg4Y","9904ujDBmpM","wVW-Q2CIOPo","8FQEcT7D7Kw","wWdTXPec1hc","OszbWEa1Znk","DcAGkT9gL1w","SDVkLdoYIA0","znwfo4Gsa_E","v2LUzvTEnec","-XMCmGijCG0","BD2oOwoqLyQ","07P9BPe-kZY","P7EdMk4o6w4","kcWON83grtM","EpoHYfPyQMk","dI7uN27lHic","sP33tdWQ728","5xCxNstU89M","pB3jP1eOmSQ","Sf1xt9Cj8ug","EAQidVPlhao","cqL47LXNkQk","18F3PPIJ7Vo","R9F1RXQi-Zw","nVTc0yHpPRk","CTO_1th8PnU","tLTIeKGmWws","GxInR0njQHg","-pzCmc-ySro","WDTiVTejJz8","UJk0x_6nldw","6xr_XTI500o","ek1BaJVVrds","4ekeVvUj4ho","osmrE4Cxjb8","EK29mZ8EYjk","LsdXIAPGgcY","EHMbNXW9hts","O_EMpJUfftw","yxw_U7rwbf4","yDmp9IbF4Qs","ERtRb0_VuDo","iC9e96W_2WA","I3hBA_CIQPI","YkyVXWZlZek","xiwvlXLm6Jg","N3YgsyBAsNU","I_g6vbwbihc","d26UyLqWGXs","JXPX4pdE4U0","w-DmG2dpYNs","X0gLWU-azi8","F8YrL2UphBo","DTWJL2daZN8","dOk5Du6-Mmc","maV7lPKPUk8","pjFg0BCYSZM","oIk98LdsaLI","C6wbkXJhYa8","ojmZ7ejSB9Q","ycYfja2vvUM","9AaoRJuXab0","ycCnH7jwEys","gMPCHSU_PDs","l5vZr5n4Yc0","4QAwbly7enU","Bo3uZ55jRMo","pz2a-IayvR8","-lm3YTTty9U","y9HFG10jAzg","581wOl2yV98","VHXBr59tdbY","g9DBD0Mu5cs","8hYVnxMaDS0","lxbzwKYyz2Y","0PluKg7KmK8","ri0ZuocVqgE","PXB4xNrwqCs","A7iYwkJx9Dc","C1ojz0PpxLI","s3nIB2OPfSI","jOydIOLCqUg","lK9Q4xw5LKo","bYIqu6vMT3A","xI4fnLK1qSA","1o01aV-gHV0","5QYLN25r7x8","x8bX4WUfMvw","otYKjyUjwOc","8ngbAKIPtSM","r_yVxbAbxAw","-SJCIbLj5lY","o6Tn8QVIi2M","rm-5u6YZkCc","tbq7VDAtqdU","yx7jGbkcqPk","Arjfc3RGgic","SBUi2vsrWnA","SuH99DocsHc","ixedfgj4jwU","KMb2Qmmd5fE","i_4pA_J7ijQ","7Xc3FNSWqnA","m0-qYGLPMWQ","5H4atZHgNTo","yNepw2PN97A","czDC1UDi_Ag","9K15lqCCKv8","6-Ve-DoPU04","lneBZ8Yr9Fw","RQjZqvN90S0","gW3G3YHRvnk","k_9iX0Q43a4","jDqo7Jml17E","o3O38NDYPiU","9XEpD--uwr0","S30ssCNiLb4","lWNHfmKU6dA","JQaajSYfrGE","yluP2hUc-Ow","YnWZuCfNiL0","fMQTSf_NOi8","paIL193hJok","DySBTf4K7PU","09F6g6qpcy0","ScJ2p5FNGwk","ECadw9XF3P8","TGIsx-t_zXY","-9kTL64qcps","k7ORf69n0FM","_7PwTQvMPco","cHPthJfOPwk","Eg8ro6lxjcg","KN5ZT-YiikI","ew1l73ApeAk","Vky4bylucSk","GoUI50nX5RY","j2uxTpNST2g","-Tjnt86udN8","AcW9SUrkRs4","8pnSb-Q0Re8","1nc7l450QbA","twkn91Woh38","I2psnZG0c7E","w50tDTRM3h4","Hl7Ulx0m7y0","s2HnFIlAjxY","QB4FSwFllQg","wgKOV4NklWE","8kQObrTaCE4","PVYWnEIGo6A","Fj9ZdgOP8Io","7_UzxAoWhMU","wMIOhQAC2hY","EuEO8taHJMY","ixmcbTTdiiY","zMxsrKoYVgo","frB4a86AZ8E","YTN1h2Vzcew","6SSEPHVxAzY","YhbOH_wSEUc","n3xqV6w7nKc","6Jz70Fi7Qko","iBotkNoWbmM","gw6emOPdnls","mleVGLg_paI","UcI3TWiVtsw","4u_NcbmEMaM","ulAqfWASJEs","T25rsvwVjqI","GSSXphgRrVs","STUKn1KvkrY","B4ZoqALLSj8","aRRRuMAlk6U","HBy8GARB8fk","qkXBi5w5Qzg","b5NGHpeVDpc","BqU5kBAAKZM","gvm4ETKFvFE","0K3UIBfYdfM","VOiu8TXSz_g","faRoNrN5HL4","B9kBlZxJegY","YjjR1to55hs","8ZdWbwIbmK8","UghkHKRpPTY","b8LjERLv9dM","w3pqrYgqerQ","TYxxJ08Bcnw","HZYDwCK4oLA","EUFxrp4-1Gw","TuLgemh5gVo","9c8QEZh7404","yAQyNE04XwM","PRyF5-u1bXU","z2u9VYwkQE0","rU6Ehcme8eE","M-DjKAqHBVY","ey70TnDES50","u61pqoO3NyQ","RGHxsPaOuc8","RVcsArZoDS0","JwzpRGa99U4","8mQo9QqzSFs","kRFXivW4qcE","FXtGRO2gUI4","C0vTjDzFPFU","YPcK3ADTTD8","Y3F5x7dOWV8","PGmPmv__nF0","BBY1AVD5qVs","2iTLOy8AM1A","fZgjA1saC2U","JPxYdW6B7nY","uha0HAAdKZw","i79vtAKtx6s","DNIcAGKrW5g","Ib6WFVpTFHU","K9_15f5iuYM","pZgzMHB280A","GghHZC6eZZw","mB5o47_kbr8","KzPw7ArtOVc","HXm91qgGyi4","4YZS3c0l1Fs","TEwB5bAJIjI","xxIUzW2L-Vs","t2QpDQNyOcc","ivAajyZCwiU","BCQ1UJG9-Ps","-TfzlgwR4PQ","KahFJamqzoA","EPTX2CbN7HE","drrK2yeB9rw","GdNgx8jlNXQ","wglYSpkA8tk","5IzrD8BzjV4","O43_hnR1X6k","O7lndss7NsA","GHxtWeaaO_c","BLPHdhPntB4","9A55R6IpPpY","aMVVLlptgoM","y01fpGw9hdg","Hn5xOr2OIiA","sRJM8LSDyQ0","ckAyoes6fuo","Iuy0G6D8hzs","MzAQ9ZTHJPs","ulwUyTf8h5A","7yEok8NQ3S8","tiG2czeWMfo","501oqJhHaw8","lXf-k_3CCdY","v8fZZf_J7XQ","o-J5DAMrS-k","S5KsmEyAoDs","Ow93J02sHfA","eaZVEawXzOQ","Pf40GZsFfDE","eUA3wkvVCBM","1qnO--se0ZE","oQiiNeS2e_U","0zlmX9CDATc","_F8ueRkC2fI","1Zssw7KKC30","OzS-5IH3V8c","83nXdpKt3bI","0gri5L3fV0k","48mYwStHhrw","A9SlITwaRXk","53huHQSEDP8","eHNX4EyhixI","1l6yj0_-CQY","wk9_l0xNI2A","9NXCeTpPXJo","dkPYP27NxhA","5UWzxuIFQl8","roeZZmZ1_BQ","CFv8zcxIIY8","V30SmmheIFs","mDqqIHUlPDA","6BjsZ9e8V-A","i33gQEfGEU0","sejcZdLnqms","mazov6vlC7o","SqKwA5iB5Qw","n5kE6OPoIk8","qEXnD6_AKk0","RibOVpcJ2Tk","47vEBfHDvt8","5E84BW7MRV8","qtr6OcUvgKc","IOnCc40WVLI","NeRUkej_zYA","GcZ4S6q0jfU","HuatRqV6_58","cX7RQgPL9gE","4vyClEPbFrU","Dk9hoD2Wg8Y","HQvL_r7Ydj0","9U85UYnsBj8","oyrzpp3Wn00","p51BE1UoPUE","BiCqr-03guo","YS9871f2ISw","FE10a3iJftI","8cyZnhek_iQ","aM3jypHmt9k","pMQ5xpVbk-k","1fjjeKS3VwM","lSj-ZQhP8UU","wz06G21f2mE","uZkAZzdPKCA","8N7nuJtIr_Q","CQHjepyn0WA","AivYKtulqNw","ONqBqeDiXRc","G_dftJ8naPY","iyoPOxP2hb4","ANSb3n7PFLU","-XDPXBODli0","crKmFUi05uk","HWfgwE3Q5wQ","mRuhSQDemzc","t9i0vU6SFbI","udU5nxOf9nA","ekC3YY9IhM8","U3p1-jQAB-s","-0yA0g0wPqM","31DBw-9cQMk","VMjetrd0RX4","QQKg0XE-4aY","1vsKD7SqiNc","2RXPNlUXKaQ","wJje-RKAZw4","zeOjHeH4jNU","b71lZwCU4tU","jUy6zW1jHc8","x6g004pIaS4","PHfeEfBktY8","8EnqXsfm8XU","CenhhSAeCp4","TAWefg69hmM","WbQMwnOnHNU","eVlREIXLh_w","6yEZJRhR6xI","yU5yQ4vUnt4","mMz6PWrvShU","49bhXnMeP4I","58LqgXsjkBQ","73N6itZah3E","IpQ829crYAI","mnfN58sOAG0","gy3vCVDHnF4","6FjUwYjKLHM","p5gDtE4zQAI","DYP924L2S0A","o9SNTUsF7Js","VIGzpMGGVL0","tLZ47u0DDco","T0Jx9riiWSU","SyvKgzIm-1c","JFqqi4vrMwU","OizHcQ19ciw","y369A6HsoUY","Se202RS3SAc","PRfdHL_UMBo","qg7JTQ0S5eU","fX7l7lGUoh8","lpYKyolqEyg","UBa8SHLQHE4","VBiOK8dB9Og","WE06cqI7JTc","_2InPFjgwJE","iV06aoTHiQ8","mC98wXBVHIg","zcLNS3dG1vk","l3l2pC8kHk4","-Tv2zEOivbw","veT_qwxuQIQ","i2cwVfCVKQw","pRfMfaNjwVs","Dsr084ip71o","DDg9TGHoPUU","etJNLfCW1cQ","JNHL2FhwHNQ","xUhHk4h9ivc","xKxdnlPOtH4","PRGcgx3mwsw","O6mLkiWF78Y","wnGLWfyqpzw","Sr5n6z4E3xE","azDfFoaFo-c","Jw4sq1gCQgY","R9PYgecX-xs","dZZZtb0AfXk","G8Q8fHdjkl8","x8KoI6qa7Yk","s_PHGbYxQQo","_r4U50QYbxk","dB0u800ZQ5U","TMZ12lsMO8I","H-QdAG8ts2g","70NqWygwqU0","keZOia1Onlg","krdUTJbqoFg","o3E92IVvK3Y","5RL0ZY2xpZs","a9uuyksatqE","hy6DDkbKDFg","QIuS5aLu1_M","BQaSlD_UFRU","ZNqtvglRdcE","hUQnRjS9p1M","5VOhGq7oJQg","PhS60AjjLUc","lw8z_l4jSu0","mD0sbrEZsHQ","USwGGyfczR8","YixWlAtvNhk","O-EYm--KgL4","uAw6kKzvJpk","9Lhg473UBvU","Xflxh789nyU","1QqTz5hCw70","nCGPRiZ_VWQ","J_LMEKLZnFM","JXa91NY6_PI","JdoBh-hkbkU","s8KJ8DRLEg0","zLA-LJZAhLw","RV8xVt7ytlA","BFWhpckBZnA","a3Cs7G7sGrk","oyr7f80hD6A","hNQm3uWGsT0","cLSKAGa1LZ0","sAbWwkgOJCo","Swwu3hDYuaA","oUzcaTvfww0","H3MCMnaxGKE","w5Cxra_1PpQ","53f1YncLhp0","zLjnO98wewQ","QwTDT65D7DU","ZCVi3SYsp7w","Jt6if7DahTU","U1e8PanpLRg","LSXuMqPd0ZY","AybMqp_y8RU","yZ97kxTA9sQ","uvm29ovlCK0","_f76cZSl2bU","7d-wRC55XlI","z9L71J5GNRo","y-f-ev9UWJA","Lpf90AATlKE","l9s6alzTthM","vS7ZoPJb_eY","Pttz01WtkqA","B0Zi6aOAJIY","5L8j-WH1t4I","INwJxa_6ULw","rgJ5bdYsVkg","L7-qd6XvN7g","ZOdLbxMgGuE","grVXvaY22bc","sX5MJpQ3X1w","w0xATY5ybXY","gepfWm9lGqg","mE2bUp1oLpI","Ykkyc-dc8Ok","ihQJUN8gcvk","UJDyySqln3g","xpEIzWu-Wmo","eJv5yaQHvfQ","CX2STDwnT7Y","Hb8xlnYjRRk","e12tJDK-nIs","L4HbN83M1UM","sZ9-xfeZzs8","kGbWfx6uZUM","9_47acIB3j0","NT6gFARTERs","LbVnbjP5wiM","chCZWfVHmGU","sAQVUcUT9jM","RVf5c_F7OlU","xDlGRtxcxm4","1V25rnVp2xM","7e2JXPEl7DU","nIYYzApeB3o","D1fVbszZNwU","x8LrUzVkO_4","PzMleSt3C1A","A3X5LFwC-9g","Wo_Ldd9OFOo","4OH86pDwbgg","_T_fq9E6PAg","dvkFin0T3S8","SGbnxLpG70s","E-NO5_76SVk","ahpTCUcWZGg","jzd-R0h_mNM","pGP66tSWdvE","iHzZSqOkQXU","wEoyqW5gwHY","EPsK2kDcu2s","9gVP4bLNzEw","fT3TDD6Ypu0","sHOVE3_6HbA","wDmE6w8BPes","E_05y81eNTg","J6wMs8w2Z78","-LiNMw0Rldk","P0sYTYQouMk","x2sFkCtzK5M","CNUCEwDjuCU","ir1FA1fmkl0","SIWTRlXv8bU","u6O5b0EDvXc","wNwxYM72hlM","PHnnBMmH0BE","yMs_-kG2ATo","uj2x1m6v4ds","mf_fY8tYSG4","Gt6LxQWikFw","q9BFLQs02vI","V2UwgPaczOQ","KRX5SUz5Pn0","-Iwjusjvmqk","tcQkbD2zmx4","GPnKfequQFU","lC4Tn_s181M","rN58-UYORQs","mEt2v_YjawA","cJnCPlVeSu0","MUbMQHmtzRA","s7w-Apb7oEY","6RJflgyIZOc","jEtB5lqhowE","VU67vsWRzcE","CQXus4kgkFw","gaPZGgo5QyA","oyYbayvJsXo","X4o0SZkQB0w","T7Wj41vl3fc","L30F35bNy9w","fhlX-8QAkWM","5oZVp_ncftI","UhBjDBpX9wY","42AnKgziH5Q","kH5dZxGXyxo","6VLIxKtfDu4","5W4qw2rD7QA","frUAhv-lYCA","T5hOVWQzmac","Im9T8VA3aM4","CNdpd2AtI4I","gRzwEyjJBhI","G4IQAaLt-eA","e0-OqD4no1k","2VzJkfzZaOU","Kj7IQ6BQHFo","B1KiBmYtrHc","W4VP98CPEl8","02pvrud71Pw","NFd05LvddOY","AMAQC10JrsA","NygiYJjDsdY","TxtSlQ5Zgdc","t6wxULHwQcs","tIC1ZjrGv4g","4QozpmLWOO4","6avqvG-SVT4","I7jb1dKT24Y","KaliSROVF-s","ziYDwbNlzdk","LI-tw4TSVdw","8lxQ06lw4W4","OVqG1ZFv7pk","7fs2NqxD1WU","521xsL2kVSw","uNbYDqMtiDY","fEQ8KL9QZ7w","Pg4Fu55mrmk","dN_r_zOITI8","8xMDr_uti3U","g3n062lSjkc","2a2Q27FQs5I","9sYMo0L1Hes","65FU4Xjt68U","ZEe8p6vvtkg","Ezs107eNwc0","93-YZ6LZvt8","z5FG1nOHdNc","nFa9tGquT_M","pyf4mOXpwmQ","50lvtlUGnKs","qiZSI31g2g4","NKp9mQcWQ-w","01ULNQyW2d0","1msR2hVrjpA","0vZ94ZItYrI","VDxIoy_m1m4","nZvYc2Cok-c","dN3W2ZNLCds","K77JxrIUUVk","ohRkVtdHU6g","CzQ0XFqottU","AN3T1yxXJuE","Kq4biRBVzns","MKrrZt4NTOU","gmztlHmciZQ","ztbKnbCZxkY","YX6CUmifHdc","6yzN-TW-L34","D-TKQtaUQaE","gNcdUQxaTrc","V8uGTC_s9gE","FSM0Qvp7BWk","FXS8-G0Vhjc","xSLK5mp4GV0","yMHwAr5WvI8","zea5CVNad-k","tEVZTL88J_Y","HvvLsP-ij5o","t71X09DTdps","mXKohx7bstQ","I7fWfeHlrUQ","XtWHBbZFajw","jg0wpK2ZP48","V_cmNFDxb7A","U-29RjguK1w","F5i91CkorBQ","KCCCQresboY","TWqgwThGfV0","WttvyvBmjSc","tzxGmKCLXk4","8FH8BukHsZY","ASnv178TNvM","rbMfkXWCqYg","xWOZRe0mwMQ","WtuljLI4COo","jWFqOFsN4Qk","dQ1qtDAwdz8","pV6c-Nz9hVo","AtbgW5GIzg0","PiTxLq4n3a8","Cs89maJy_ts","w0nJ98fNh34","1XdqEYwV-l0","8XyZFYVckkw","a5PxzQO-UGs","lhppHxAbvLE","ztsQxjY3wZo","Zk30U4URglw","i98aYTC70TI","5O7SEAE_Suw","u3qWIb3Wu2Q","lKdvGWehGb0","Nd_Po6x-iO8","xgmgpBzsmuI","Yi3GqyW-RwI","KKZ7PocrSbw","4dmuS4VHaR0","aSuCG4KLU8w","P9mDdGlV1xk","0b5jaqIohoc","YRU4PyFbwtc","YO3v_UFsBHQ","nt6PARH0oXA","K7uYnRCGR2w","X20ZuPv9-lc","PaC4hF9wfS8","wxDjdf5PnpQ","Fv7QK3iOFNw","nIb31bm0klE","zazO6D6Rs4A","CVAZIqD6Mdw","A5WWlsJeiPE","qnFqa-4v9aA","PStNNu0j1xI","NsyzBUcdAyo","ujRT0ba0xUs","iP4J8h6dHHQ","7qqq2N4yq_Q","VubITdyqO8Q","4kmVCa1BSQM","nqnYYui96Sg","DZqYW0VDxKc","4srZwJQSxcY","5KB9FfsZTtE","61gi0LbUKrc","bUUICAhFEZw","XqPrq-v7QAU","E6vQYnvknjU","C5WE8-464vk","lqFp50iDy8U","O5CUiguMnnY","wPjJV0vK1Pk","ztJg8f2J8dY","EKgfyPfDr60","b8jHD_0GVR4","ozqERoykXIg","Z_0_E5ivnlM","WUnhVIPf-vw","BGjYMAp0VU0","sIEOXUElJKw","JPI9AaCoh4A","0QgtCzgn6GU","lOADv9EEY2M","G16_TKgSMbc","MjT-wZS8iNI","F6bPLpnO9II","sbvl1nEqNMk","Wue5uL4ZQyI","RAG9VVJYJ60","6YuOVD5VJ4s","rvRkrUtu1hs","8VVLdbXY8GY","64_pocTy5uw","cVW78lRj1a4","G3hQ4WAVIMk","XNda99K2RiE","cJIMxWP-wP0","wN83etHzfNQ","QfMi37xotgk","hKBxgqNccfU","J2fnbRIqbw0","n5g9Y0CQ1W4","UT0sC17Yczk","9xZmCjTWGz0","Kvusayd1Z-c","7mAnaCxSRTg","R10-1Clrr6Q","1HgU-fFBlfQ","PUVsPHBrBMg","WMh8i0AwoJU","0vH0cjVLL9I","hPeDrWGMy_8","Htjrwo-wodQ","eyFxJC3Eqtc","wz0bmHAgdrY","i9G7lNk0iA8","TiD9RVfdrCc","Em-Jd3st4Mo","rRERzryxdz8","7X3nT0llark","dP_TurV1-JU","7yhBpyaOFjI","iH96jz8X9EA","KNbWXycsX9U","QuB4pE_zkk4","hZR154u6gGE","jt0WLPoh1HE","bbdopVnjvFg","ahcDzXlpx5U","fp2PvpQRzP0","v1XHp319oUs","Vz_-6g10aQ4","E9kbpK2FFlc","yqICFTQpAig","d4JtnScyNjU","V20VxD79TD8","YfELphu6kGI","n4-T_k2uPUg","1xAvBz2L77E","V3EVHt2LlZo","PF9BV-I5b_o","s-NQmIiglOM","IwKszn5BS8Q","3segC_sw33U","ZIHcDvSqfdw","RNxX3dHqREE","0YNukcZV5go","2XH7NBl-NJc","szJ4LIKVmsc","hukjoe0bq_0","G33c4k5LAh8","nGynEEhfTJw","fNNBbFQ0Sq0","YpVhUfoU_UI","LwO3dVV9IJo","kumZVxWmjmg","PTq-Jkca8ks","I9ImYHSfKbk","MSoc3IEVDsg","b59SlD7KNxg","MmGrIduywAk","h1yfEzhs-1Q","NggcBpSY2S4","HLVZtTALySs","PKEiBPVBKNE","rh5eHGWVAus","FtvT9-t5U8U","LuITDGTkVjY","eqp3wod2i7Y","NzPIZo3Dqjs","8uCx5eMJA1o","TryVDzsQTtA","U_Scq7Sxov8","NwgsJMhdftw","8_5lUEJztxg","v4Dbww16mPs","ain8-9bH_OY","BcSybiEmMUY","lKUod0RDI9Y","soyfbknvbFI","hI55vg5Xdcs","cK15lyjqSRA","V4FSADno8_k","Os1zjiufASA","SRjOMS30ex0","_ecufoTXhL8","OO9th3dUMuY","yMBX9O0MvCo","OSx3q3e1e_c","kDtLVdyvNN0","g_ClrEwRmB8","sfdC8Z3xOkU","OW-ZQzIFA0E","_qd6PbOHMkI","lUh0l8xluG8","Gj0szIsTJm8","h7wMV33NpjA","5oqL3IakWpA","K4aEZ-pcLow","X7j2u4jDlVs","XSnMcfcqjUw","6BMSI7ZQ2cU","Jt4NEYWptG4","wzQ09kbob4Q","s4Ls95QK99o","YkqXt8pgopo","ZxWvuqvzRrw","jDnp9E7w2VU","wDssFCzgqrw","HR06nI5FQu0","Z9AmJOiFHEY","Lm71ScSvsOE","cQ5PN1cyNFM","MoF1Z9lSBBU","v_dNUI0tWL4","tx74LjrQngg","wmE9CpZF5k0","COZlBVhhLoQ","jw7_xZwZTeQ","lyisGtpHREE","G7xSKY0EJNM","RL8TVmP776s","Qhq62XVMmbw","5PrSkgdXTU0","F5cHY-h7gpw","IRMBMNO2reM","VBjS1gSOdyU","9CveQSRB6tE","fK-yuWmp3Bo","hCvgPTaHRbc","TEJ9m2ZsPp8"];
+let durations = [242,370,487,430,680,300,342,360,554,468,2167,407,374,490,439,253,496,452,611,506,428,576,592,347,358,332,239,438,534,354,236,277,478,438,458,98,576,527,455,388,344,406,399,560,135,354,463,406,663,185,427,556,464,508,525,466,427,480,370,377,311,442,450,1325,476,423,990,423,1698,393,333,455,658,421,481,241,542,405,2334,336,155,361,693,430,443,629,242,187,388,362,428,595,416,360,968,549,461,544,390,736,603,471,337,576,420,463,482,401,594,396,372,433,340,309,481,177,375,481,263,583,394,385,583,421,1529,391,431,393,392,441,448,454,542,497,352,1566,406,461,383,192,394,437,384,444,379,409,318,394,1348,195,452,426,374,385,396,397,375,441,477,340,354,365,400,450,353,422,370,397,333,486,392,424,473,384,394,370,262,380,363,383,413,310,376,476,328,450,424,409,347,389,491,376,335,393,345,354,342,384,395,426,444,376,425,412,370,355,224,332,430,305,238,412,196,385,411,191,401,394,194,803,744,470,794,388,492,427,436,505,406,536,377,532,446,476,532,503,572,454,193,376,266,346,478,397,568,452,273,236,371,786,363,439,418,550,416,163,434,365,417,149,340,1079,885,417,334,490,346,487,1034,938,458,553,413,462,145,414,357,409,361,409,949,369,524,388,364,382,486,415,510,341,474,79,572,407,398,888,904,360,549,122,386,380,480,295,418,622,450,370,418,482,399,511,464,466,461,306,418,404,1045,295,703,1198,723,481,381,667,307,402,504,359,676,438,268,713,392,917,482,523,681,687,254,458,446,727,1084,355,421,548,484,629,1323,781,363,804,432,374,446,338,336,887,344,297,329,870,650,147,366,406,607,488,293,326,164,550,192,312,407,382,382,413,693,735,200,518,588,241,384,220,394,675,358,238,351,250,469,266,1035,326,89,494,373,1081,712,1108,400,409,636,966,338,536,467,542,398,301,1005,415,333,377,637,183,561,448,422,461,631,380,407,846,900,318,564,364,330,467,456,508,273,295,361,535,302,234,203,2416,291,265,413,444,342,442,297,389,301,916,584,220,302,550,455,1025,609,583,463,268,703,352,221,364,439,377,366,979,485,328,1419,586,601,368,550,798,138,1029,366,263,850,818,587,2665,840,444,336,1371,634,883,253,498,457,2780,541,866,657,468,404,1682,675,749,608,671,687,337,827,465,520,747,695,342,1341,539,366,585,302,722,347,803,496,3776,418,542,259,914,330,482,323,332,335,3453,341,406,493,411,305,232,661,399,362,200,344,323,8721,384,333,365,5896,633,363,828,341,3249,316,443,322,321,445,393,604,4924,362,423,325,428,4724,309,202,646,417,4724,325,389,605,312,380,601,329,326,6206,319,159,342,492,7095,335,530,379,362,5406,315,362,567,158,449,364,450,375,451,362,537,523,415,356,380,316,1171,421,433,461,341,397,480,512,337,471,302,514,338,357,399,418,377,442,376,219,557,332,354,396,295,337,415,343,374,549,426,419,362,335,376,703,475,391,492,369,697,522,512,277,638,348,696,329,369,376,332,313,202,373,691,335,343,475,382,417,437,460,588,719,841,359,393,450,156,520,320,170,388,443,509,343,268,514,415,1205,143,479,414,516,170,322,375,2063,331,696,384,665,1057,449,268,386,592,54,740,571,492,636,824,416,218,402,314,557,422,13160,6184,11607,26422,23300,16191,13195,21808,13535,12071,28735,13228,14351,8549,3801,18007,15754,12496,16058,7439,17875,4273,1925,8142,8401,14546,12368,1124,8853,3439,10863,1708,10164,23285,4728,15972,2482,22789,25232,16564,29476,21713,13348,8622,17447,6220,2360,4057,7769,20613,22814,7565,3444,26093,19450,2099,9819,8271,2884,2414,8859,9948,1921,18748,24270,17597,30425,9262,29807,3061,7122,4611,21450,1296,11105,16277,18967,22593,16547,25371,21910,14934,16359,18522,18701,25198,7202,2440,23415,815,25226,16013,13470,5160,8001,12241,6476,5850,20046,5567,30015,22946,25772,20102,24742,25592,16366,5443,6681,7015,7657,4441,12984,6661,18004,10366,7398,923,21931,24078,20161,23839,7372,24623,23830,5536,8451,1765,3360,6067,1351,12194,9873,2346,21254,20973,28523,10531,36178,20904,22031,21970,13480,18520,22051,10589,19290,20743,17845,17670,4242,520,19069,5613,9371,12451,13081,20234,20592,14209,13045,20210,16626,20195,9466,13233,6778,2241,16967,18714,3922,9311,12242,4161,5343,8721,4862,1063,7439,10428,22834,3503,16291,5470,15505,5698,7605,15844,5214,10051,15403,20149,1406,4656,14680,9897,12040,715,1706,13440,5261,2766,2442,3528,3601,18377,19431,16605,1801,19398,2586,2507,11135,7215,18946,9847,9251,18462,1066,14855,20941,1051,16180,1321,3120,10605,2580,4218,15853,9437,3813,4083,3588,1281,15784,3125,13441,22706,20921,16196,10525,16095,16744,19893,1873,2946,7723,18245,15741,12139,2359,3308,3846,5366,14005,17995,7713,7796,4845,5977,6247,8971,2563,570,4854,9311,6512,2680,8311,16448,16314,1871,1596,620,7276,1741,17045,20467,14265,5520,4241,6901,4492,218,12898,14249,14209,12527,10632,14513,3145,8809,12193,15434,16587,22461,12479,18840,19285,17251,2306,2082,2259,1687,12179,860,8742,6846,10156,2399,15509,10978,19963,971,1721,2254,4382,4936,12122,17905,22982,24250,26405,29807,5277,8813,2291,13420,16057,13865,9650,8617,6929,7043,12918,8770,13890,9959,7770,1903,16058,11027,2627,11715,11070,15365,8712,13790,8675,3494,8649,6083,3065,5584,4949,5598,5427,13373,2262,2513,9111,2311,1824,6410,3992,7512,11164,13421,13286,11515,6340,15184,6555,11107,10762,13166,6093,8206,6465,531,4528,7623,2512,9327,3178,5016,9053,11011,12505,7643,12265,3959,9589,9044,6914,6388,5791,5885,2737,14846,12465,13232,15141,8599,15713,11562,2777,4080,15559,13226,1767,9173,5412,8867,417,1386,17656,14197,5370,14618,18836,17453,12524,14583,12128,12068,10239,17049,17805,13596,3393,9147,13792,10055,4779,18091,20269,13352,13425,7352,11410,11972,14204,12179,15882,15220,14939,14612,13079,19149,22065,21017,26378,14597,21352,18404,10784,20958,26252,15366,17098,22773,23351,8561,9719,3739,15566,9989,19035,21614,19636,15604,11645,20337,17678,9978,3067,20377,11444,14816,14583,17596,23471,7681,17482,7577,14724,6576,5471,26538,4168,25348,23031,25306,28753,15648,12406,8296,18331,31440,29018,22395,20744,17538,8022,9559,2632,13380,23364,11633,22112,2857,17515,20197,17012,19789,19237,15559,21329,19341,14094,15899,17290,15793,18379,24118,17056,18820,20016,18245,3170,20458,17148,15115,12910,19900,16379,21551,19927,16280,21688,24025,20535,27002,19806,22167,19055,20155,23948,15950,18344,14880,4329,3046,12979,5395,19166,13194,5965,22058,21340,14733,20287,16844,17381,13299,18299,10421,20494,10530,11807,21040,20144,15240,18280,20000,16750,12479,3150,3889,7421,17211,19882,17574,19222,19937,20706,21207,15416,6231,20871,10350,1280,4799,16523,21066,19282,18580,22569,14931,889,11451,24852,12500,4851,28986,23507,23250,20573,26500,21677,20942,19377,15010,16901,19206,22874,27577,23466,17920,22091,21727,18113,12902,16907,15788,6266,8436,12188,13194,11991,27578,25264,11339,12871,6311,9800,29568,15504,9534,7206,6228,23675,26808,39050,14618,25633,12615,25731,4480,20872,34173,28902,11426,11428,31067,19954,4915,7435,9159,8865,9840,3897,27226,22929,38465,28672,29140,12139,12483,14054,28680,36572,17135,28639,24701,34801,11950,23331,26291,31898,5452,4805,9616,1310,10852,17945,32477,23160,12285,11116,21958,20760,27294,31500,10081,16736,25645,25360,9509,8383,943,29348,6808,15069,7396,11211,6001,21592,27299,16972,23516,15452,8244,30087,21052,9785,15743,14692,14660,30502,26310,21987,29025,25868,28918,12134,11013,8521,9259,6666,4281,11610,18983,34171,11977,7856,2906,10022,26767,21011,41268,23452,27314,23601,26072,23728,11169,23949,4058,17123,24877,6902,6013,1940,23713,23967,18047,13099,12480,13403,25519,27589,26025,26206,19038,10508,20524,22363,24220,6994,17246,20326,29599,3792,36884,26699,3860,6427,22666,23114,23011,27679,31704,21135,22542,22645,27838,16305,10483,7894,18454,14892,33819,37104,25899,24551,31629,5966,10004,26581,14254,11392,19554,16635,31477,7226,16349,6999,8542,8632,3440,5226,6646,9889,6821,31651,24074,12366,7891,30333,31513,24162,21210,34810,21200,15612,2912,25339,6350,9861,8793,17764,26624,22738,13053,25437,9542,13111,28503,29889,22274,24374,25578,22358,24966,21268,5091,11180,19469,13534,14930,7328,8827,6127,25618,28914,28075,28822,7550,19952,30338,27853,28455,32857,16814,5583,12898,4395,19170,34436,40198,32334,26827,17657,18608,18538,24145,32707,29677,29866,19634,17956,29823,5800,7099,16025,30722,27837,24429,9878,12839,30339,28369,17059,9091,11143,28886,21785,1883,43164,32419,30182,25823,24903,32027,30257,23910,3844,41949,29318,34736,8528,21370,31749,10231,19024,25583,26824,18468,27103,21918,25692,19135,10031,13962,22290,12172,10854,6095,19693,5421,6596,11929,8402,15123,15420,5925,7482,10080,23176,14705,17680,23547,24704,32839,17010,24136,27020,32550,11721,14286,24624,1419,7724,5080,16719,20008,10659,15776,14109,27079,14517,10754,10973,8044,14900,17723,21054,22600,6991,13132,5335,10693,6263,10255,11626,8040,8462,7647,11614,12407,9443,17230,13805,16066,13585,14683];
+let total_duration = 14995808;
+let statistics = {
+	main_videos: 720,
+	main_duration: 395763,
+	total_videos: 1708,
+	total_duration: 14995808
+};
+
+//  Functions  //
+
+let get_rounded_hours = function(seconds){
+	return (Math.round(seconds / 3600) + " hours");
+};
+
+
+let past_videos_allowed = video_ids.slice();
+let past_videos_allowed_durations = durations.slice();
+let past_videos_disallowed = [];
+let past_videos_disallowed_durations = [];
+
+let past_videos_total_duration = total_duration;
+
+let past_video_limit = 200;
+
+
+let add_past_video = function(index){
+	past_videos_disallowed.unshift(past_videos_allowed[index]);
+	past_videos_disallowed_durations.unshift(past_videos_allowed_durations[index]);
+	
+	past_videos_allowed.splice(index, 1);
+	past_videos_allowed_durations.splice(index, 1);
+	
+    remove_overflowing_past_videos();
+};
+
+let remove_overflowing_past_videos = function(){
+	if(past_video_limit < 0){
+		return;
+	}
+	//console.log("removing too many, starts as ", past_videos_disallowed.slice());
+    while(past_videos_disallowed.length > past_video_limit){
+		//console.log(past_videos_disallowed.length, past_video_limit);
+		past_videos_allowed.push(past_videos_disallowed.pop());
+		past_videos_allowed_durations.push(past_videos_disallowed_durations.pop());
+		//console.log("removed some", past_videos_disallowed.slice());
+    }
+	//console.log("removing too many finished", past_videos_disallowed.slice());
+	
+	
+	past_videos_total_duration = 0;
+	
+	//let total = 0;
+	
+	for(let duration of past_videos_allowed_durations){
+		past_videos_total_duration += duration;
+	}
+};
+
+let get_random_video = function(){
+	let video_id = "0bOsA93yYFk";
+	let original_steps = (Math.random() * past_videos_total_duration);
+	let steps = original_steps;
+    let last_index = 0;
+    
+    
+    //Prevent infinite loop
+    if(video_ids.length <= past_video_limit){
+        past_video_limit = (video_ids.length - 1);
+    }
+	
+    if(past_videos_total_duration === 0
+    || past_videos_allowed.length === 0){
+        return {
+            video_id: video_id,
+            seconds: 0
+        };
+    }
+	
+	
+	if(settings.bad_random_algorithm === true){
+		let video_index = Math.floor(Math.random() * past_videos_allowed.length);
+		let random_time = Math.floor(Math.random() * past_videos_allowed_durations[video_index]);
+		
+		let video_id = past_videos_allowed[video_index];
+        add_past_video(video_index);
+		
+		return {
+            video_id: video_id,
+            seconds: random_time
+        };
+	}
+	
+    while(true){
+        for(let i = 0;;i = ((i + 1) % past_videos_allowed_durations.length)){
+            if(steps > past_videos_allowed_durations[i]){
+                steps -= past_videos_allowed_durations[i];
+            } else {
+                video_id = past_videos_allowed[i];
+                last_index = i;
+                break;
+            }
+        }
+        
+        
+        add_past_video(last_index);
+        break;
+    }
+    
+	
+	return ({
+		video_id: video_id,
+		seconds: steps
+	});
+};
+
+
+
+let hide_container_elements = function(){
+	loading_text_node.style.display = "none";
+	instruction_text_node.style.display = "none";
+	youtube_play_area_node.style.display = "none";
+	about_text_node.style.display = "none";
+};
+
+//  Variables  //
+
+let data_type_shown = "loading";
+
+
+//  Button Methods  //
+
+let random_button = document.querySelector("#random_button");
+let video_button = document.querySelector("#video_button");
+let about_button = document.querySelector("#about_button");
+
+
+let loading_text_node = document.querySelector("#data_container .loading_text");
+let instruction_text_node = document.querySelector("#data_container .instruction_text");
+let youtube_play_area_node = document.querySelector("#data_container .youtube_play_area");
+let about_text_node = document.querySelector("#data_container .about_text");
+
+let random_button_on_click = function(){
+	if(player_ready !== true){
+		play_random_on_ready = true;
+		return;
+	}
+	
+	hide_container_elements();
+	youtube_play_area_node.style.display = "flex";
+	data_type_shown = "video";
+	video_button.classList.add("navigation_item_location");
+	about_button.classList.remove("navigation_item_location");
+	
+	play_random_video();
+	send_control_panel_message("reset_timer");
+};
+random_button.onclick = random_button_on_click;
+
+let video_button_on_click = function(){
+	if(player_ready !== true){
+		return;
+	}
+	if(data_type_shown === "loading"
+	|| data_type_shown === "instruction"){
+		return;
+	}
+	
+	if(player === null){
+		show_instructions();
+		return;
+	}
+	
+	hide_container_elements();
+	youtube_play_area_node.style.display = "flex";
+	data_type_shown = "video";
+	video_button.classList.add("navigation_item_location");
+	about_button.classList.remove("navigation_item_location");
+};
+video_button.onclick = video_button_on_click;
+
+let about_button_on_click = function(){
+	if(player !== null){
+		player.pauseVideo();
+	}
+	
+	hide_container_elements();
+	about_text_node.style.display = "flex";
+	data_type_shown = "about";
+	video_button.classList.remove("navigation_item_location");
+	about_button.classList.add("navigation_item_location");
+	
+	if(about_text_node.children.length === 0){
+		about_text_node.appendChild(get_about_node());
+	}
+};
+about_button.onclick = about_button_on_click;
+
+let show_instructions = function(){
+	hide_container_elements();
+	instruction_text_node.style.display = "flex";
+	data_type_shown = "instruction";
+	video_button.classList.add("navigation_item_location");
+	about_button.classList.remove("navigation_item_location");
+	
+	instruction_text_node.innerText = get_instruction_text();
+};
+
+
+let get_instruction_text = function(){
+	let total_hours = get_rounded_hours(statistics.total_duration);
+	
+	let text = (
+		`Click the button at the top center to play a random moment out of ${total_hours} of Jerma videos and streams! ` +
+		`For more controls on what is played open the control panel in the top right.` +
+		`\n\n\n`
+	);
+	
+	if(days_since_update === 1){
+		text += `Last updated ${days_since_update} day ago.`;
+	} else {
+		text += `Last updated ${days_since_update} days ago.`;
+	}
+	
+	return text;
+};
+
+let get_about_node = function(){
+	let get_chance = function(ratio){
+		return ((ratio * 100).toFixed(1) + "%");
+	};
+	
+	
+	let div = document.createElement("div");
+	div.classList.add("about");
+	
+	let span = document.createElement("span");
+	span.innerText = "For more play options see the control panel in the top right. This page loads a random moment out of all Jerma videos and streams. Although there are many main channel videos, they are unlikely to be played as they have such a compact duration. (A few other YouTube era videos count as \"main channel\" here.)";
+	
+	
+	let table_data = [
+		["Total videos", statistics.total_videos],
+		["Archived streams", (statistics.total_videos - statistics.main_videos)],
+		["Main channel videos", statistics.main_videos],
+		["Total duration", get_rounded_hours(statistics.total_duration)],
+		["Archived duration", get_rounded_hours(statistics.total_duration - statistics.main_duration)],
+		["Main channel duration", get_rounded_hours(statistics.main_duration)],
+		["Chance archived stream", get_chance((statistics.total_duration - statistics.main_duration) / statistics.total_duration)],
+		["Chance main channel", get_chance(statistics.main_duration / statistics.total_duration)]
+	];
+	
+	
+	let statistics_node = document.createElement("table");
+	
+	for(let row_data of table_data){
+		let row = statistics_node.insertRow();
+		let cell_1 = row.insertCell();
+		let cell_2 = row.insertCell();
+		
+		cell_1.innerText = (row_data[0] + ":");
+		cell_2.innerText = row_data[1];
+	}
+	
+	div.appendChild(span);
+	div.appendChild(statistics_node);
+	
+	return div;
+};
+
+
+// 3. This function creates an <iframe> (and YouTube player)
+//    after the API code downloads.
+let player = null;
+let player_ready = false;
+let play_random_on_ready = false;
+
+let first_video = null;
+
+let play_random_video = function(){
+	let random_video = get_random_video();
+	//console.log(random_video);
+	
+	if(player === null){
+		player = new YT.Player("youtube_player", {
+			height: null,
+			width: null,
+			videoId: random_video.video_id,
+			events: {
+				"onReady": on_player_ready
+			}
+		});
+		
+		first_video = random_video;
+	} else {
+		player.loadVideoById(random_video.video_id, random_video.seconds);
+	}
+};
+
+// 4. The API will call this function when the video player is ready.
+let on_player_ready = function(event){
+	if(first_video !== null){
+		let video = first_video;
+		first_video = null;
+		
+		player.seekTo(video.seconds, true);
+	} else {
+		event.target.playVideo();
+	}
+};
+
+// 2. This code loads the IFrame Player API code asynchronously.
+var tag = document.createElement('script');
+
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+// 3. This function creates an <iframe> (and YouTube player)
+//    after the API code downloads.
+
+function onYouTubeIframeAPIReady() {
+	if(player_ready === true){
+		return;
+	}
+	player_ready = true;
+	
+	
+	if(data_type_shown !== "loading"){
+		return;
+	}
+	
+	if(play_random_on_ready === true){
+		random_button_on_click();
+	} else {
+		show_instructions();
+	}
+}
+
+
+//  Keyboard Inputs  //
+
+document.body.onkeydown = function(event){
+	if(event.repeat === true){
+		return;
+	}
+	
+	if(event.code === "KeyR"){
+		random_button.click();
+	} else if(event.code === "ArrowRight"){
+		jump_video_position("forwards");
+	} else if(event.code === "ArrowLeft"){
+		jump_video_position("backwards");
+	} else if(event.code === "Space"){
+		toggle_playback();
+	}
+};
+
+
+let jump_video_position = function(direction){
+	if(player === null){
+		return;
+	}
+	
+	let player_state = player.getPlayerState();
+	
+	if(player_state !== YT.PlayerState.ENDED
+	&& player_state !== YT.PlayerState.PLAYING
+	&& player_state !== YT.PlayerState.PAUSED
+	&& player_state !== YT.PlayerState.BUFFERING){
+		return;
+	}
+	
+	
+	let current_time = player.getCurrentTime();
+	let new_time;
+	
+	if(direction === "forwards"){
+		new_time = (current_time + 5 * player.getPlaybackRate());
+	} else if(direction === "backwards"){
+		new_time = (current_time - 5 * player.getPlaybackRate());
+	} else {
+		throw new Error("Unknown jump video positiion direction");
+	}
+	
+	player.seekTo(new_time, true);
+};
+
+
+let toggle_playback = function(){
+	if(player === null){
+		return;
+	}
+	
+	let player_state = player.getPlayerState();
+	
+	if(player_state === YT.PlayerState.PLAYING){
+		player.pauseVideo()
+	} else {
+		player.playVideo();
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//    Page Settings
+//
+
+let settings = {
+	ignore_video_length: past_video_limit,
+	bad_random_algorithm: false,
+	
+	//timer_start_time: 120
+};
+
+
+
+
+
+//
+//    Control Panel
+//
+
+let control_panel_window = NaN;
+
+
+let is_control_panel_open = false;
+
+let open_control_panel = function(event){
+	event.preventDefault();
+	
+	if(is_control_panel_open === true){
+		return;
+	}
+	is_control_panel_open = true;
+	
+	let url = "./random_control_panel.html";
+	
+	if(window.location.host.length > 0){
+		url = "./random_control_panel.html";
+	}
+	
+	control_panel_window = window.open(url, "_blank", "menubar=no,toolbar=no,height=650,width=400");
+	
+	//Opening window failed.
+	if(control_panel_window === null){
+		on_control_panel_closed();
+		return;
+	}
+	
+	document.body.classList.add("control_panel_open");
+};
+
+let on_control_panel_closed = function(){
+	control_panel_window = NaN;
+	is_control_panel_open = false;
+	document.body.classList.remove("control_panel_open");
+};
+
+
+let control_panel_button = document.querySelector(".control_panel_button");
+
+control_panel_button.addEventListener("click", open_control_panel);
+
+if(window.navigator.userAgent.toLowerCase().includes("mobile")){
+	control_panel_button.style.display = "none";
+}
+
+
+
+let close_control_panel = function(){
+	if(typeof control_panel_window !== "object"
+	|| control_panel_window === null){
+		return;
+	}
+	
+	control_panel_window.close();
+	on_control_panel_closed();
+};
+window.addEventListener("unload", close_control_panel);
+
+
+
+
+//  Message Listener  //
+
+
+let on_window_message = function(event){
+	if(event.source !== control_panel_window){
+		return;
+	}
+	
+	let data = event.data;
+	//console.log(data);
+	
+	
+	if(typeof data !== "object"
+	|| data === null){
+		return;
+	}
+	
+	if(data.command === "control_panel_closed"){
+		on_control_panel_closed();
+	}
+	if(data.command === "get_settings"){
+		send_control_panel_message("set_settings", settings);
+	}
+	if(data.command === "get_video_count"){
+		send_control_panel_message("set_video_count", video_ids.length);
+	}
+	if(data.command === "set_settings"){
+		set_page_settings(data.data);
+	}
+	if(data.command === "set_timer_default"){
+		timer_default = data.data;
+	}
+	if(data.command === "get_timer_default"){
+		send_control_panel_message("set_timer_default", timer_default);
+	}
+	if(data.command === "play_random_moment"){
+		random_button.click();
+	}
+};
+
+window.addEventListener("message", on_window_message, false);
+
+let timer_default = 120;
+
+let send_control_panel_message = function(command, data){
+	if(typeof control_panel_window !== "object"
+	|| control_panel_window === null){
+		return;
+	}
+	
+	control_panel_window.postMessage({
+		command: command,
+		data: data
+	}, "*");
+};
+
+
+
+
+
+
+let set_page_settings = function(new_settings){
+	settings.bad_random_algorithm = Boolean(new_settings.bad_random_algorithm);
+	//settings.timer_start_time = new_settings.timer_start_time;
+	
+	
+	
+	let ignore_video_length = Number(new_settings.ignore_video_length);
+	
+	if(ignore_video_length >= video_ids.length){
+		ignore_video_length = (video_ids.length - 1);
+	}
+	if(ignore_video_length < 0){
+		ignore_video_length = 0;
+	}
+	
+	
+	settings.ignore_video_length = ignore_video_length;
+	remove_overflowing_past_videos();
+};
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

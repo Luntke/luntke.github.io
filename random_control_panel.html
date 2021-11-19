@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Random Control Panel - jerma.org</title>
+	
+	<meta name="referrer" content="origin">
+	<meta name="robots" content="noindex, nofollow"/>
+	<meta name="author" content="Merlin Luntke, Twitch Lazy_Luc"/>
+	
+	<link rel="shortcut icon" sizes="16x16" href="./images/favicon_16.png"/>
+	<link rel="shortcut icon" sizes="32x32" href="./images/favicon_32.png"/>
+	<link rel="shortcut icon" sizes="48x48" href="./images/favicon_48.png"/>
+	<link rel="shortcut icon" sizes="64x64" href="./images/favicon_64.png"/>
+	<link rel="shortcut iconn" sizes="96x96" href="./images/favicon_96.png"/>
+	<link rel="shortcut icon apple-touch-icon" sizes="144x144" href="./images/favicon_144.png"/>
+	<link rel="shortcut icon apple-touch-icon" sizes="192x192" href="./images/favicon_192.png"/>
+
+<style>
+html {
+	/*background-color: #70d698;*/
+	background-color: #158e88;
+    background: linear-gradient(180deg, rgb(26, 209, 181) -48%, rgb(15, 53, 76) 100%);
+    background: linear-gradient(180deg, rgb(26, 209, 181) -48%, rgb(15, 53, 76) 148%);
+    min-height: 100vh;
+}
+body {
+    color: #232323;
+}
+h2 {
+    color: #000000;
+}
+
+.error_message {
+	display: none;
+    color: #000000;
+}
+
+.apply_settings:not([disabled]) {
+	background-color: #ca4f4f;
+}
+
+</style>
+</head>
+<body>
+
+<div class="error_message"></div>
+
+<div class="panel_container">
+<!--
+Tip: If you have a second monitor you can play the video in fullscreen by showing
+the webpage in fullscreen (press F11 in Windows) and moving the control panel to
+a different monitor. Note that using the YouTube player fullscreen function hides
+the timer.<br />
+<br />
+Tip: You can have chat messages and channel points reduce the timer by using negative numbers.<br />
+<br />
+<br />
+-->
+
+<button id="random_button">Random Jerma Moment</button><br />
+
+<h2>Control Panel</h2>
+
+A played video will not be picked again for <input type="number" id="video_repeat_input" min="0" max="1554" value="200" style="width: 70px;"/> videos. A higher number reduces duplicate videos, see the <a href="https://en.wikipedia.org/wiki/Birthday_problem" target="_blank" rel="noreferrer">birthday problem</a>.
+<span id="video_repeat_stats"></span><br />
+<br />
+<input type="checkbox" id="bad_random_input"/>
+Pick a random video first and then a random moment in that video.
+This gives moments in short videos a way larger chance than normal and about 25% of the time you will get TF2.
+<br />
+<br />
+<button class="apply_settings" disabled>Apply Settings</button>
+
+<br />
+
+<h2>Timer</h2>
+
+Every time the timer hits 0 a random moment is played.<br />
+<br />
+<input type="checkbox" id="enable_timer_input"/> Enable timer<br />
+<input type="number" id="timer_default_input" min="10" value="120" style="width: 70px;"/> Timer start time<br />
+<button id="reset_timer_button">Reset Timer</button><br />
+<br />
+<div id="timer_display" style="font-size: 2rem;"></div>
+</div>
+
+
+<script>
+//  Error Message  //
+
+let error_node = document.querySelector(".error_message");
+
+let set_error_message = function(message){
+	error_node.style.display = "block";
+	error_node.innerText = message;
+};
+
+
+//  Main  //
+
+
+if(window.opener === null){
+	let panel_node = document.querySelector(".panel_container");
+	
+	set_error_message("");
+	error_node.innerHTML = "You have to open the control panel from the page <a href=\"https://jerma.org/random\">jerma.org/random</a> or there is no page to control.";
+	panel_node.style.display = "none";
+	
+	throw new Error("No window opener exists. Throwing error to stop execution.");
+}
+
+
+
+
+let on_unload = function(){
+	send_message("control_panel_closed");
+};
+
+window.addEventListener("unload", on_unload);
+
+
+
+
+let on_window_message = function(event){
+	if(event.source !== window.opener){
+		return;
+	}
+	
+	
+	let data = event.data;
+	//console.log(data);
+	
+	if(typeof data !== "object"
+	|| data === null){
+		return;
+	}
+	
+	if(data.command === "set_settings"){
+		set_own_settings(data.data);
+	}
+	if(data.command === "set_timer_default"){
+		settings.timer_start_time = data.data;
+		timer_default_input.value = settings.timer_start_time;
+	}
+	if(data.command === "reset_timer"){
+		reset_timer();
+	}
+	if(data.command === "set_video_count"){
+		video_repeat_stats.innerText = `There are ${data.data} total videos, so set it to the maximum of ${data.data - 1} to play every video in random order.`;
+		video_repeat_input.max = (data.data - 1);
+	}
+};
+
+
+
+
+window.addEventListener("message", on_window_message, false);
+
+let send_message = function(command, data){
+	if(window.opener === null){
+		return;
+	}
+	
+	window.opener.postMessage({
+		command: command,
+		data: data
+	}, "*");
+};
+
+
+send_message("get_settings");
+send_message("get_video_count");
+send_message("get_timer_default");
+
+
+
+
+
+random_button.addEventListener("click", function(){
+	send_message("play_random_moment");
+});
+
+
+
+
+
+
+let apply_settings_button = document.querySelector(".apply_settings");
+
+let have_settings_changed = function(){
+	let settings_changed = false;
+	
+	/*
+	console.log(Number(video_repeat_input.value), settings.ignore_video_length);
+	console.log(bad_random_input.checked, settings.bad_random_algorithm);
+	console.log(Number(timer_default_input.value), settings.timer_start_time);
+	*/
+	
+	if(!Number.isNaN(Number(video_repeat_input.value))
+	&& video_repeat_input.value.length > 0){
+		if(Number(video_repeat_input.value) !== settings.ignore_video_length){
+			settings_changed = true;
+		}
+	}
+	if(bad_random_input.checked !== settings.bad_random_algorithm){
+		settings_changed = true;
+	}
+	
+	return settings_changed;
+};
+
+let settings_on_input = function(){
+	apply_settings_button.disabled = !(have_settings_changed());
+};
+
+video_repeat_input.oninput = settings_on_input;
+bad_random_input.oninput = settings_on_input;
+//timer_default_input.oninput = settings_on_input;
+timer_default_input.oninput = function(){
+	let value = Number(timer_default_input.value);
+	
+	if(Number.isNaN(value)
+	|| timer_default_input.value.length === 0){
+		return;
+	}
+	
+	settings.timer_start_time = value;
+	send_message("set_timer_default", value);
+};
+
+
+apply_settings_button.onclick = function(){
+	if(have_settings_changed()){
+		let ignore_video_length = Number(video_repeat_input.value);
+		if(!Number.isNaN(ignore_video_length)
+		&& video_repeat_input.value.length > 0){
+			settings.ignore_video_length = ignore_video_length;
+		}
+		
+		settings.bad_random_algorithm = bad_random_input.checked;
+		//settings.timer_start_time = Number(timer_default_input.value);
+		
+		apply_settings_button.disabled = true;
+		
+		send_message("set_settings", settings);
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let settings = {
+	ignore_video_length: 0,
+	bad_random_algorithm: false,
+	
+	timer_start_time: 0
+};
+
+let set_own_settings = function(new_settings){
+	settings.ignore_video_length = new_settings.ignore_video_length;
+	settings.bad_random_algorithm = new_settings.bad_random_algorithm;
+	//settings.timer_start_time = new_settings.timer_start_time;
+	
+	
+	video_repeat_input.value = settings.ignore_video_length;
+	bad_random_input.checked = settings.bad_random_algorithm;
+	//timer_default_input.value = settings.timer_start_time;
+};
+set_own_settings(settings);
+
+
+
+
+
+
+
+
+enable_timer_input.addEventListener("input", function(){
+	if(enable_timer_input.checked === true){
+		start_timer();
+	} else {
+		stop_timer();
+	}
+});
+
+reset_timer_button.onclick = function(){
+	reset_timer();
+};
+
+
+let timer_timeout_id = undefined;
+let timer_is_running = false;
+let timer_finish_time = 0;
+let timer_display_content = NaN;
+
+/*
+<input type="checkbox" id="enable_timer_input"/> Enable timer<br />
+<input type="number" id="timer_default_input" min="10" value="120" style="width: 70px;"/> Timer start time<br />
+<button id="reset_timer_button">Reset Timer</button><br />
+<br />
+<div id="timer_display" style="font-size: 2rem;"></div>
+*/
+
+let start_timer = function(){
+	if(timer_is_running === true){
+		return;
+	}
+	timer_is_running = true;
+	
+	timer_timeout_id = setInterval(update_timer, 200);
+	reset_timer();
+};
+
+let stop_timer = function(){
+	timer_is_running = false;
+	clearInterval(timer_timeout_id);
+	timer_timeout_id = undefined;
+	reset_timer();
+};
+
+let reset_timer = function(){
+	timer_finish_time = (Date.now() + settings.timer_start_time * 1000 + 999);
+	update_timer();
+};
+
+let update_timer = function(){
+	let time_remaining = ((timer_finish_time - Date.now()) / 1000);
+	let time_string = String(Math.floor(time_remaining));
+	
+	if(time_string !== timer_display_content){
+		timer_display_content = time_string;
+		timer_display.innerText = time_string;
+	}
+	
+	if(timer_is_running === true
+	&& time_remaining <= 0){
+		random_button.click();
+	}
+};
+
+
+
+
+
+
+reset_timer();
+
+
+
+
+
+
+</script>
+
+
+</body>
+</html>
