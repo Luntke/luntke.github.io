@@ -147,7 +147,6 @@ let on_window_message = function(event){
 		reset_timer();
 	}
 	if(data.command === "set_video_count"){
-		data.data = 1708;
 		video_repeat_stats.innerText = `There are ${data.data} total videos, so set it to the maximum of ${data.data - 1} to play every video in random order.`;
 		video_repeat_input.max = (data.data - 1);
 	}
